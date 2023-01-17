@@ -1,0 +1,46 @@
+.header {
+  margin: auto;
+  display: inline-block;
+  width: 100%;
+  height: 80px;
+}
+
+.parent {
+  /* display: flex; */
+  /* flex : 1; */
+  /* flex-direction: row; */
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.left_div {
+  /* flex: 1; */
+  margin: 10px;
+  float: left;
+  
+}
+
+.middle_div {
+  /* flex: 3; */
+  padding-top: 20px;
+  /* background-color: blue; */
+}
+
+.btn1{
+  display: inline-block;
+  margin-right: 30px;
+  width: 50%;
+  /* background-color: orange; */
+  
+}
+
+.btn2{
+  display: inline-block;
+  margin-right: 10px;
+  
+}
+
+.btnLogin{
+  display: inline-block;
+  float: right;
+  margin-right: 20px;
+}
