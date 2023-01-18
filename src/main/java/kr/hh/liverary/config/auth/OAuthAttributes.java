@@ -6,21 +6,21 @@ import java.util.function.Function;
 
 public enum OAuthAttributes {
     GOOGLE("google" , (attributes) -> {
-        SessionUser sessionUser = new SessionUser();
-        sessionUser.setName((String) attributes.get("name"));
-        sessionUser.setEmail((String) attributes.get("email"));
-        return sessionUser;
+        MemberProfile memberProfile = new MemberProfile();
+        memberProfile.setName((String) attributes.get("name"));
+        memberProfile.setEmail((String) attributes.get("email"));
+        return memberProfile;
     });
 
     private final String registrationId;
-    private final Function<Map<String, Object>, SessionUser> of;
+    private final Function<Map<String, Object>, MemberProfile> of;
 
-    OAuthAttributes(String registrationId , Function<Map<String, Object>, SessionUser> of){
+    OAuthAttributes(String registrationId , Function<Map<String, Object>, MemberProfile> of){
         this.registrationId = registrationId;
         this.of = of;
     }
 
-    public static SessionUser extract(String registrationId, Map<String, Object> attributes){
+    public static MemberProfile extract(String registrationId, Map<String, Object> attributes){
         return Arrays.stream(values())
                 .filter(provider -> registrationId.equals(provider.registrationId))
                 .findFirst()

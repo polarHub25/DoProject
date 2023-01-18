@@ -34,6 +34,9 @@ dependencies {
 	//security 단위테스트 의존성 추가
 	testImplementation 'org.springframework.security:spring-security-test'
 
+	//H2테스트DB 추가
+	runtimeOnly 'com.h2database:h2'
+
 }
 
 tasks.named('test') {

@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
+import Login from "./Login.js";
 import styles from "./Home.css";
 
-function Home(){
+function Home({showLoginModal, setShowLoginModal}){
     return (
         <div className={styles.home}>
-            <h1>Home</h1>
-        </div>
+        {showLoginModal === true ? (
+          <Login showLoginModal={true} setShowLoginModal={setShowLoginModal} />
+        ) : null}
+      
+      <div>
+       <h1>HOME</h1>
+      </div>
+      </div>
     );
 }
 

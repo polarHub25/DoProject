@@ -1,8 +1,8 @@
 package kr.hh.liverary.config.auth;
 
 
-import kr.hh.liverary.domain.user.User;
-import kr.hh.liverary.domain.user.UserRepository;
+import kr.hh.liverary.domain.user.Member;
+import kr.hh.liverary.domain.user.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -24,7 +24,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
 
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException{
         OAuth2UserService delegate = new DefaultOAuth2UserService();
@@ -37,11 +37,11 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
                                                     .getUserInfoEndpoint()
                                                     .getUserNameAttributeName(); //OAuth 로그인시 키(pk)가 되는 값
         Map<String, Object> attributes = oAuth2User.getAttributes(); //OAuth 서비스의 유저 정보들
-        SessionUser sessionUser = OAuthAttributes.extract(registrationId, attributes); //registrationId에 따라 유저 정보를 통해 공통된 UserProfile 객체로 만들어줌.
-        sessionUser.setProvider(registrationId);
-        User user = saveOrUpdate(sessionUser);
+        MemberProfile memberProfile = OAuthAttributes.extract(registrationId, attributes); //registrationId에 따라 유저 정보를 통해 공통된 UserProfile 객체로 만들어줌.
+        memberProfile.setProvider(registrationId);
+        Member member  = saveOrUpdate(memberProfile);
 
-        Map<String, Object> customAttribute = customAttribute(attributes, userNameAttributeName, sessionUser, registrationId);
+        Map<String, Object> customAttribute = customAttribute(attributes, userNameAttributeName, memberProfile, registrationId);
 
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority("USER")),
@@ -49,19 +49,19 @@ public class OAuthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
                 userNameAttributeName);
     }
 
-    private Map customAttribute(Map attributes, String userNameAttributeName, SessionUser sessionUser , String registrationId){
+    private Map customAttribute(Map attributes, String userNameAttributeName, MemberProfile memberProfile, String registrationId){
         Map<String, Object> customAttribute  = new LinkedHashMap<>();
         customAttribute.put(userNameAttributeName, attributes.get(userNameAttributeName));
         customAttribute.put("provider", registrationId);
-        customAttribute.put("name", sessionUser.getName());
-        customAttribute.put("email" , sessionUser.getEmail());
+        customAttribute.put("name", memberProfile.getName());
+        customAttribute.put("email" , memberProfile.getEmail());
         return customAttribute;
     }
 
-    private User saveOrUpdate(SessionUser sessionUser){
-        User user = userRepository.findByEmailAndProvider(sessionUser.getEmail() , sessionUser.getProvider())
-                .map(m->m.update(sessionUser.getName(), sessionUser.getEmail()))
-                .orElse(sessionUser.toUser());
-        return userRepository.save(user);
+    private Member saveOrUpdate(MemberProfile memberProfile){
+        Member member  = memberRepository.findByEmailAndProvider(memberProfile.getEmail() , memberProfile.getProvider())
+                .map(m->m.update(memberProfile.getName(), memberProfile.getEmail()))
+                .orElse(memberProfile.toMember());
+        return memberRepository.save(member);
     }
 }

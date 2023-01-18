@@ -8,8 +8,6 @@ import Home from './routes/Home';
 
 function App() {
 
-const [message, setMessage] = useState([]);
-
 const [userName, setUserName] = useState("");
 const [showLoginModal, setShowLoginModal] = useState(false);
 

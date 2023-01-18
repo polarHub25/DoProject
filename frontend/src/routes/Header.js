@@ -10,7 +10,7 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import axios from "axios";
 
 function Header(props){
-
+  console.log("Header File Enter==");
     const [userName, setUserName] = useState("");
     const [userId, setUserId] = useState("");
     const [userEmail, setUserEmail] = useState("");
@@ -41,10 +41,11 @@ function Header(props){
    const loginBtnClicked = (event) => {
     event.preventDefault();
     props.setShowLoginModal(true);
+    
   };
 
   const onChangeSearchBar = (event) => {
-     // console.log(event.target.value);
+      console.log(event.target.value);
       const searchText = event.target.value;
       //setSearchName(searchText);
   };
@@ -81,7 +82,7 @@ function Header(props){
                 {userName === "" ? (
                         <Button variant="dark" className="searchBtn" id="button-search" size="lg" active
                         href="/signin" onClick={loginBtnClicked} >
-                        로그인
+                        로그인dd
                         </Button>
                        ) : (
                          <Dropdown>
